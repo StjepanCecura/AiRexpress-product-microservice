@@ -70,7 +70,7 @@ module.exports = async (req, res) => {
       res.status(200).send(modifiedResponse);
     })
     .catch((error) => {
-      console.log("Error occurred while fetching entries:", error);
+      console.log("Error occurred while fetching products:", error);
       res.status(400).send(error);
     });
 };
