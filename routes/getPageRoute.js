@@ -82,7 +82,10 @@ const markdownToHtml = (markdownDescription) => {
   const imageRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
   htmlDesciption = htmlDesciption.replace(newLineRegex, "<br/>");
   htmlDesciption = htmlDesciption.replace(boldRegex, "<strong>$1</strong>");
-  htmlDesciption = htmlDesciption.replace(imageRegex, '<a href="$2">$1</a>');
+  htmlDesciption = htmlDesciption.replace(
+    imageRegex,
+    '<a style="color:blue; text-decoration:underline" href="$2">$1</a>'
+  );
 
   return htmlDesciption;
 };
