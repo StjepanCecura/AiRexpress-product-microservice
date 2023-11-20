@@ -25,9 +25,20 @@ module.exports = async (req, res) => {
         });
       });
 
+      let tag = response.items[0].fields.tag;
+      let category = response.items[0].fields.category;
+
       const modifiedResponse = {
         title: response.items[0].fields.title,
         slug: response.items[0].fields.slug,
+        type:
+          category != undefined
+            ? "category"
+            : tag != undefined
+            ? "tag"
+            : "none",
+        tag: response.items[0].fields.tag ?? "none",
+        category: response.items[0].fields.category ?? "none",
         description: htmlDesciption,
         header: {
           title: response.items[0].fields.header.fields.title,
