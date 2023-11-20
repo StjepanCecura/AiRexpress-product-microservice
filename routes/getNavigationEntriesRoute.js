@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
             : "none";
         modifiedResponse.push({ title, slug, type });
       });
-      res.send(modifiedResponse);
+      res.status(200).send(modifiedResponse);
     })
     .catch((error) => {
       console.log("Error occurred while fetching entries:", error);
