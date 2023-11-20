@@ -42,6 +42,7 @@ module.exports = async (req, res) => {
         description: htmlDesciption,
         header: {
           title: response.items[0].fields.header.fields.title,
+          description: response.items[0].fields.header.fields.shortDescription,
           image: {
             title: response.items[0].fields.header.fields.image.fields.title,
             description:
