@@ -24,6 +24,7 @@ module.exports = async (req, res) => {
             : "none";
         modifiedResponse.push({ title, slug, type });
       });
+      modifiedResponse.reverse();
       res.status(200).send(modifiedResponse);
     })
     .catch((error) => {
