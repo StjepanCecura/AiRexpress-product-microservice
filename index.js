@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const getNavigationEntriesRoute = require("./routes/getNavigationEntriesRoute");
+const getPageRoute = require("./routes/getPageRoute");
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 app.get("/getNavigationEntries", getNavigationEntriesRoute);
+app.get("/getPage", getPageRoute);
 
 app.listen(port, () => {
   console.log(`Product service on port: ${port}`);
