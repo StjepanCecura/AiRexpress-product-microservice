@@ -2,8 +2,10 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+
 const getNavigationEntriesRoute = require("./routes/getNavigationEntriesRoute");
 const getPageRoute = require("./routes/getPageRoute");
+const getHomePageRoute = require("./routes/getHomePageRoute");
 
 dotenv.config();
 
@@ -20,6 +22,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 app.get("/getNavigationEntries", getNavigationEntriesRoute);
+app.get("/getHomePage", getHomePageRoute);
 app.get("/getPage", getPageRoute);
 
 app.listen(port, () => {

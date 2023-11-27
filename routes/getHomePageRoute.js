@@ -1,15 +1,15 @@
 const ContentfulClient = require("../utils/contentful");
+const { getCategoryName } = require("../utils/functions");
 const { filterProducts } = require("../utils/functions");
 const { markdownToHtml } = require("../utils/functions");
 
 module.exports = async (req, res) => {
   const contentfulClientInstance = new ContentfulClient();
   const client = contentfulClientInstance.getClient();
-  const slug = req.query.slug;
   client
     .getEntries({
-      content_type: "page",
-      "fields.slug": slug,
+      content_type: "homePage",
+      "fields.slug": "home",
     })
     .then(async (response) => {
       let markdownDescription = response.items[0].fields.description;
@@ -27,14 +27,28 @@ module.exports = async (req, res) => {
         });
       });
 
-      const categoryId = response.items[0].fields.category;
-      const filteredProducts = await filterProducts(categoryId);
+      const categoryId1 = response.items[0].fields.category1;
+      const categoryId2 = response.items[0].fields.category2;
+
+      const categoryName1 = await getCategoryName(categoryId1);
+      const categoryName2 = await getCategoryName(categoryId2);
+
+      const filteredProducts1 = await filterProducts(categoryId1);
+      const filteredProducts2 = await filterProducts(categoryId2);
 
       const modifiedResponse = {
         title: response.items[0].fields.title,
         slug: response.items[0].fields.slug,
-        type: categoryId != undefined ? "category" : "none",
-        products: filteredProducts ?? "none",
+        type:
+          categoryId1 != undefined
+            ? "category"
+            : categoryId2 != undefined
+            ? "category"
+            : "none",
+        products1Title: categoryName1 ?? "none",
+        products1: filteredProducts1 ?? {},
+        products2Title: categoryName2 ?? "none",
+        products2: filteredProducts2 ?? {},
         description: htmlDesciption,
         header: {
           title: response.items[0].fields.header.fields.title,
