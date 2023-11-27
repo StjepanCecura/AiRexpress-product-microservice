@@ -1,4 +1,5 @@
 const ContentfulClient = require("../utils/contentful");
+const { commercetoolsClient } = require("../utils/commercetools.js");
 
 module.exports = async (req, res) => {
   const contentfulClientInstance = new ContentfulClient();
@@ -9,7 +10,7 @@ module.exports = async (req, res) => {
       content_type: "page",
       "fields.slug": slug,
     })
-    .then((response) => {
+    .then(async (response) => {
       let markdownDescription = response.items[0].fields.description;
       const htmlDesciption = markdownToHtml(markdownDescription);
       const longText = markdownToHtml(
@@ -25,20 +26,15 @@ module.exports = async (req, res) => {
         });
       });
 
-      let tag = response.items[0].fields.tag;
-      let category = response.items[0].fields.category;
+      let categoryId = response.items[0].fields.category;
+
+      const filteredProducts = await filterProducts(categoryId);
 
       const modifiedResponse = {
         title: response.items[0].fields.title,
         slug: response.items[0].fields.slug,
-        type:
-          category != undefined
-            ? "category"
-            : tag != undefined
-            ? "tag"
-            : "none",
-        tag: response.items[0].fields.tag ?? "none",
-        category: response.items[0].fields.category ?? "none",
+        type: categoryId != undefined ? "category" : "none",
+        products: filteredProducts ?? "none",
         description: htmlDesciption,
         header: {
           title: response.items[0].fields.header.fields.title,
@@ -88,4 +84,36 @@ const markdownToHtml = (markdownDescription) => {
   );
 
   return htmlDesciption;
+};
+
+const filterProducts = async (categoryId) => {
+  const allProducts = await commercetoolsClient.execute({
+    method: "GET",
+    uri: `/airtim1-webshop-i-cms/products`,
+  });
+
+  const filteredProducts = [];
+  allProducts.body.results.map((product) => {
+    let match = false;
+    product.masterData.current.categories.map((category) => {
+      if (category.id == categoryId) match = true;
+    });
+    if (match) {
+      console.log(product.masterData.current);
+      filteredProducts.push({
+        productKey: product.key,
+        name: product.masterData.current.name["en-US"],
+        variantKey: product.masterData.current.masterVariant.key,
+        regularPrice:
+          product.masterData.current.masterVariant.prices[0].value.centAmount /
+          100,
+        discountPrice:
+          product?.masterData?.current?.masterVariant?.prices[0]?.discounted
+            ?.value?.centAmount / 100,
+        images: product.masterData.current.masterVariant.images,
+      });
+    }
+  });
+
+  return filteredProducts;
 };
