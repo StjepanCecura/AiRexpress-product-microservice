@@ -26,37 +26,31 @@ const getCategoryName = async (categoryId) => {
   return category?.body?.name?.["en-US"];
 };
 
-const getAllProducts = async () => {
+const getAllProducts = async (categoryId, offset) => {
   const allProducts = await commercetoolsClient.execute({
     method: "GET",
-    uri: `/airtim1-webshop-i-cms/products`,
+    uri: `/airtim1-webshop-i-cms/products?limit=2&offset=${offset}&where=masterData%28current%28categories%28id%3D%22${categoryId}%22%29%29%29`,
   });
 
   return allProducts;
 };
 
-const filterProducts = async (categoryId, allProducts) => {
+const filterProducts = async (allProducts) => {
   const filteredProducts = [];
   allProducts?.body?.results?.forEach((product) => {
-    let match = false;
-    product?.masterData?.current?.categories?.forEach((category) => {
-      if (category?.id == categoryId) match = true;
+    filteredProducts.push({
+      productKey: product?.key,
+      name: product?.masterData?.current?.name?.["en-US"],
+      variantKey: product?.masterData?.current?.masterVariant?.key,
+      regularPrice:
+        product?.masterData?.current?.masterVariant?.prices[0]?.value
+          ?.centAmount / 100,
+      discountPrice:
+        product?.masterData?.current?.masterVariant?.prices[0]?.discounted
+          ?.value?.centAmount / 100,
+      images: product?.masterData?.current?.masterVariant?.images,
+      categories: product?.masterData?.current?.categories,
     });
-    if (match) {
-      filteredProducts.push({
-        productKey: product?.key,
-        name: product?.masterData?.current?.name?.["en-US"],
-        variantKey: product?.masterData?.current?.masterVariant?.key,
-        regularPrice:
-          product?.masterData?.current?.masterVariant?.prices[0]?.value
-            ?.centAmount / 100,
-        discountPrice:
-          product?.masterData?.current?.masterVariant?.prices[0]?.discounted
-            ?.value?.centAmount / 100,
-        images: product?.masterData?.current?.masterVariant?.images,
-        categories: product?.masterData?.current?.categories,
-      });
-    }
   });
 
   return filteredProducts;
