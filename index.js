@@ -8,6 +8,7 @@ const getPageRoute = require("./routes/getPageRoute");
 const getHomePageRoute = require("./routes/getHomePageRoute");
 const getProductVariantsRoute = require("./routes/getProductVariantsRoute");
 const getProductsByCategory = require("./routes/getProductsByCategoryRoute");
+const getProductsByCategoriesRoute = require("./routes/getProductsByCategoriesRoute");
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.get("/getNavigationEntries", getNavigationEntriesRoute);
 app.get("/getHomePage", getHomePageRoute);
 app.get("/getPage", getPageRoute);
 app.get("/getProductsByCategory", getProductsByCategory);
+app.get("/getProductsByCategories", getProductsByCategoriesRoute);
 app.get("/getProductVariants", getProductVariantsRoute);
 
 app.listen(port, () => {

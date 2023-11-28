@@ -35,6 +35,20 @@ const getAllProducts = async (categoryId, offset, limit) => {
   return allProducts;
 };
 
+const getProductsByCategories = async (
+  categoryId1,
+  categoryId2,
+  offset,
+  limit
+) => {
+  const allProducts = await commercetoolsClient.execute({
+    method: "GET",
+    uri: `/airtim1-webshop-i-cms/products?limit=${limit}&offset=${offset}&where=masterData%28current%28categories%28id%3D%22${categoryId1}%22%20%29%20AND%20categories%28id%3D%22${categoryId2}%22%29%29%29`,
+  });
+
+  return allProducts;
+};
+
 const filterProducts = async (allProducts) => {
   const filteredProducts = [];
   allProducts?.body?.results?.forEach((product) => {
@@ -61,4 +75,5 @@ module.exports = {
   filterProducts,
   markdownToHtml,
   getAllProducts,
+  getProductsByCategories,
 };
