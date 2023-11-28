@@ -9,6 +9,7 @@ module.exports = async (req, res) => {
     const categoryId = req.query.categoryId;
     const categoryName = await getCategoryName(categoryId ?? undefined);
     const allProducts = await getAllProducts();
+    console.log(allProducts.body.results);
     const filteredProducts = await filterProducts(categoryId, allProducts);
     res.status(200).send({ categoryName, filteredProducts });
   } catch (error) {

@@ -54,6 +54,7 @@ const filterProducts = async (categoryId, allProducts) => {
           product?.masterData?.current?.masterVariant?.prices[0]?.discounted
             ?.value?.centAmount / 100,
         images: product?.masterData?.current?.masterVariant?.images,
+        categories: product?.masterData?.current?.categories,
       });
     }
   });
