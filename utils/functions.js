@@ -1,6 +1,8 @@
 const { commercetoolsClient } = require("../utils/commercetools.js");
 
 const markdownToHtml = (markdownDescription) => {
+  if (markdownDescription == undefined) return "";
+
   let htmlDesciption = markdownDescription;
   const newLineRegex = /\n/g;
   const boldRegex = /__(.*?)__/g;
@@ -16,12 +18,14 @@ const markdownToHtml = (markdownDescription) => {
 };
 
 const getCategoryName = async (categoryId) => {
+  if (categoryId == undefined) return undefined;
+
   const category = await commercetoolsClient.execute({
     method: "GET",
     uri: `/airtim1-webshop-i-cms/categories/` + categoryId,
   });
 
-  return category.body.name["en-US"];
+  return category?.body?.name?.["en-US"];
 };
 
 const filterProducts = async (categoryId) => {
@@ -33,21 +37,21 @@ const filterProducts = async (categoryId) => {
   const filteredProducts = [];
   allProducts.body.results.map((product) => {
     let match = false;
-    product.masterData.current.categories.map((category) => {
-      if (category.id == categoryId) match = true;
+    product?.masterData?.current?.categories?.map((category) => {
+      if (category?.id == categoryId) match = true;
     });
     if (match) {
       filteredProducts.push({
-        productKey: product.key,
-        name: product.masterData.current.name["en-US"],
-        variantKey: product.masterData.current.masterVariant.key,
+        productKey: product?.key,
+        name: product?.masterData?.current?.name?.["en-US"],
+        variantKey: product?.masterData?.current?.masterVariant?.key,
         regularPrice:
-          product.masterData.current.masterVariant.prices[0].value.centAmount /
-          100,
+          product?.masterData?.current?.masterVariant?.prices[0]?.value
+            ?.centAmount / 100,
         discountPrice:
           product?.masterData?.current?.masterVariant?.prices[0]?.discounted
             ?.value?.centAmount / 100,
-        images: product.masterData.current.masterVariant.images,
+        images: product?.masterData?.current?.masterVariant?.images,
       });
     }
   });

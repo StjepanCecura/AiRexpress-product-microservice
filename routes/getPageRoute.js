@@ -12,56 +12,66 @@ module.exports = async (req, res) => {
       "fields.slug": slug,
     })
     .then(async (response) => {
-      let markdownDescription = response.items[0].fields.description;
+      let markdownDescription = response.items[0]?.fields?.description;
       const htmlDesciption = markdownToHtml(markdownDescription);
       const longText = markdownToHtml(
-        response.items[0].fields.footer.fields.longText
+        response?.items[0]?.fields?.footer?.fields?.longText
       );
-      const carousel = response.items[0].fields.carousel.fields;
+      const carousel = response?.items[0]?.fields?.carousel?.fields;
+
       const carouselImages = [];
-      carousel.images.map((image) => {
+      carousel?.images?.map((image) => {
         carouselImages.push({
-          title: image.fields.title,
-          description: image.fields.description,
-          url: image.fields.file.url,
+          title: image?.fields?.title,
+          description: image?.fields?.description,
+          url: image?.fields?.file?.url,
         });
       });
 
-      const categoryId = response.items[0].fields.category;
+      const categoryId = response?.items[0]?.fields?.category;
       const filteredProducts = await filterProducts(categoryId);
 
       const modifiedResponse = {
-        title: response.items[0].fields.title,
-        slug: response.items[0].fields.slug,
+        title: response?.items[0]?.fields?.title,
+        slug: response?.items[0]?.fields?.slug,
         type: categoryId != undefined ? "category" : "none",
         products: filteredProducts ?? "none",
         description: htmlDesciption,
         header: {
-          title: response.items[0].fields.header.fields.title,
-          description: response.items[0].fields.header.fields.shortDescription,
+          title: response?.items[0]?.fields?.header?.fields?.title,
+          description:
+            response?.items[0]?.fields?.header?.fields?.shortDescription,
           image: {
-            title: response.items[0].fields.header.fields.image.fields.title,
+            title:
+              response?.items[0]?.fields?.header?.fields?.image?.fields?.title,
             description:
-              response.items[0].fields.header.fields.image.fields.description,
-            url: response.items[0].fields.header.fields.image.fields.file.url,
+              response?.items[0]?.fields?.header?.fields?.image?.fields
+                ?.description,
+            url: response?.items[0]?.fields?.header?.fields?.image?.fields?.file
+              ?.url,
           },
         },
         footer: {
-          email: response.items[0].fields.footer.fields.email,
-          phoneNumber: response.items[0].fields.footer.fields.phoneNumber,
+          email: response?.items[0]?.fields?.footer?.fields?.email,
+          phoneNumber: response?.items[0]?.fields?.footer?.fields?.phoneNumber,
           longText: longText,
           image: {
             title:
-              response.items[0].fields.footer.fields.footerImage.fields.title,
+              response?.items[0]?.fields?.footer?.fields?.footerImage?.fields
+                ?.title,
             description:
-              response.items[0].fields.footer.fields.footerImage.description,
-            url: response.items[0].fields.footer.fields.footerImage.fields.file
-              .url,
+              response?.items[0]?.fields?.footer?.fields?.footerImage
+                ?.description,
+            url: response?.items[0]?.fields?.footer?.fields?.footerImage?.fields
+              ?.file?.url,
           },
         },
-        carousel: {
-          images: carouselImages,
-        },
+        carousel:
+          carouselImages?.length == 0
+            ? undefined
+            : {
+                images: carouselImages,
+              },
       };
       res.status(200).send(modifiedResponse);
     })
