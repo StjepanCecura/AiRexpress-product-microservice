@@ -15,7 +15,6 @@ module.exports = async (req, res) => {
       offset,
       limit
     );
-    console.log(allProducts);
     const filteredProducts = await filterProducts(allProducts);
     res.status(200).send({
       products: filteredProducts,
