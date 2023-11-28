@@ -33,14 +33,11 @@ module.exports = async (req, res) => {
 
       const categoryId = response?.items[0]?.fields?.category;
 
-      const allProducts = await getAllProducts();
-      const filteredProducts = await filterProducts(categoryId, allProducts);
-
       const modifiedResponse = {
         title: response?.items[0]?.fields?.title,
         slug: response?.items[0]?.fields?.slug,
         type: categoryId != undefined ? "category" : "none",
-        products: filteredProducts ?? "none",
+        category: categoryId,
         description: htmlDesciption,
         header: {
           title: response?.items[0]?.fields?.header?.fields?.title,

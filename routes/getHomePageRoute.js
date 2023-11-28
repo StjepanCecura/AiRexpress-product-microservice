@@ -1,13 +1,7 @@
 const ContentfulClient = require("../utils/contentful");
-const {
-  getCategoryName,
-  filterProducts,
-  markdownToHtml,
-  getAllProducts,
-} = require("../utils/functions");
+const { markdownToHtml } = require("../utils/functions");
 
 module.exports = async (req, res) => {
-  console.log(new Date());
   const contentfulClientInstance = new ContentfulClient();
   const client = contentfulClientInstance.getClient();
   client
@@ -34,14 +28,6 @@ module.exports = async (req, res) => {
       const categoryId1 = response?.items[0]?.fields?.category1;
       const categoryId2 = response?.items[0]?.fields?.category2;
 
-      const categoryName1 = await getCategoryName(categoryId1 ?? undefined);
-      const categoryName2 = await getCategoryName(categoryId2 ?? undefined);
-
-      const allProducts = await getAllProducts();
-
-      const filteredProducts1 = await filterProducts(categoryId1, allProducts);
-      const filteredProducts2 = await filterProducts(categoryId2, allProducts);
-
       const modifiedResponse = {
         title: response?.items[0]?.fields?.title,
         slug: response?.items[0]?.fields?.slug,
@@ -51,10 +37,8 @@ module.exports = async (req, res) => {
             : categoryId2 != undefined
             ? "category"
             : "none",
-        products1Title: categoryName1,
-        products1: categoryId1 == undefined ? undefined : filteredProducts1,
-        products2Title: categoryName2,
-        products2: categoryId2 == undefined ? undefined : filteredProducts2,
+        category1: categoryId1,
+        category2: categoryId2,
         description: htmlDesciption,
         header: {
           title: response?.items[0]?.fields?.header?.fields?.title,
@@ -92,8 +76,6 @@ module.exports = async (req, res) => {
                 images: carouselImages,
               },
       };
-      console.log(new Date());
-
       res.status(200).send(modifiedResponse);
     })
     .catch((error) => {
