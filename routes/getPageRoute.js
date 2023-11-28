@@ -1,9 +1,5 @@
 const ContentfulClient = require("../utils/contentful");
-const {
-  filterProducts,
-  markdownToHtml,
-  getAllProducts,
-} = require("../utils/functions");
+const { markdownToHtml } = require("../utils/functions");
 
 module.exports = async (req, res) => {
   const contentfulClientInstance = new ContentfulClient();

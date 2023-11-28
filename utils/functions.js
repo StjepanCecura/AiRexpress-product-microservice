@@ -26,10 +26,10 @@ const getCategoryName = async (categoryId) => {
   return category?.body?.name?.["en-US"];
 };
 
-const getAllProducts = async (categoryId, offset) => {
+const getAllProducts = async (categoryId, offset, limit) => {
   const allProducts = await commercetoolsClient.execute({
     method: "GET",
-    uri: `/airtim1-webshop-i-cms/products?limit=2&offset=${offset}&where=masterData%28current%28categories%28id%3D%22${categoryId}%22%29%29%29`,
+    uri: `/airtim1-webshop-i-cms/products?limit=${limit}&offset=${offset}&where=masterData%28current%28categories%28id%3D%22${categoryId}%22%29%29%29`,
   });
 
   return allProducts;

@@ -8,8 +8,9 @@ module.exports = async (req, res) => {
   try {
     const categoryId = req.query.categoryId;
     const offset = req.query.offset ?? 0;
+    const limit = req.query.limit ?? 12;
     const categoryName = await getCategoryName(categoryId ?? undefined);
-    const allProducts = await getAllProducts(categoryId, offset);
+    const allProducts = await getAllProducts(categoryId, offset, limit);
     console.log(allProducts);
     const filteredProducts = await filterProducts(allProducts);
     res.status(200).send({
