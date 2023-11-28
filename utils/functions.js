@@ -19,25 +19,27 @@ const markdownToHtml = (markdownDescription) => {
 
 const getCategoryName = async (categoryId) => {
   if (categoryId == undefined) return undefined;
-
   const category = await commercetoolsClient.execute({
     method: "GET",
     uri: `/airtim1-webshop-i-cms/categories/` + categoryId,
   });
-
   return category?.body?.name?.["en-US"];
 };
 
-const filterProducts = async (categoryId) => {
+const getAllProducts = async () => {
   const allProducts = await commercetoolsClient.execute({
     method: "GET",
     uri: `/airtim1-webshop-i-cms/products`,
   });
 
+  return allProducts;
+};
+
+const filterProducts = async (categoryId, allProducts) => {
   const filteredProducts = [];
-  allProducts.body.results.map((product) => {
+  allProducts?.body?.results?.forEach((product) => {
     let match = false;
-    product?.masterData?.current?.categories?.map((category) => {
+    product?.masterData?.current?.categories?.forEach((category) => {
       if (category?.id == categoryId) match = true;
     });
     if (match) {
@@ -59,4 +61,9 @@ const filterProducts = async (categoryId) => {
   return filteredProducts;
 };
 
-module.exports = { getCategoryName, filterProducts, markdownToHtml };
+module.exports = {
+  getCategoryName,
+  filterProducts,
+  markdownToHtml,
+  getAllProducts,
+};

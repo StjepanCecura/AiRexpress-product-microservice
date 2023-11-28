@@ -1,9 +1,13 @@
 const ContentfulClient = require("../utils/contentful");
-const { getCategoryName } = require("../utils/functions");
-const { filterProducts } = require("../utils/functions");
-const { markdownToHtml } = require("../utils/functions");
+const {
+  getCategoryName,
+  filterProducts,
+  markdownToHtml,
+  getAllProducts,
+} = require("../utils/functions");
 
 module.exports = async (req, res) => {
+  console.log(new Date());
   const contentfulClientInstance = new ContentfulClient();
   const client = contentfulClientInstance.getClient();
   client
@@ -19,7 +23,7 @@ module.exports = async (req, res) => {
       );
       const carousel = response?.items[0]?.fields?.carousel?.fields;
       const carouselImages = [];
-      carousel?.images?.map((image) => {
+      carousel?.images?.forEach((image) => {
         carouselImages?.push({
           title: image?.fields?.title,
           description: image?.fields?.description,
@@ -33,8 +37,10 @@ module.exports = async (req, res) => {
       const categoryName1 = await getCategoryName(categoryId1 ?? undefined);
       const categoryName2 = await getCategoryName(categoryId2 ?? undefined);
 
-      const filteredProducts1 = await filterProducts(categoryId1);
-      const filteredProducts2 = await filterProducts(categoryId2);
+      const allProducts = await getAllProducts();
+
+      const filteredProducts1 = await filterProducts(categoryId1, allProducts);
+      const filteredProducts2 = await filterProducts(categoryId2, allProducts);
 
       const modifiedResponse = {
         title: response?.items[0]?.fields?.title,
@@ -86,6 +92,8 @@ module.exports = async (req, res) => {
                 images: carouselImages,
               },
       };
+      console.log(new Date());
+
       res.status(200).send(modifiedResponse);
     })
     .catch((error) => {
