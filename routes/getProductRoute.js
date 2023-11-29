@@ -22,8 +22,25 @@ module.exports = async (req, res) => {
     if (
       currentVariant.productKey != masterVariant.key &&
       currentVariant.name == masterVariantName.replaceAll("-", " ")
-    )
-      otherSizes.push(masterVariantSize);
+    ) {
+      let totalQuantity = 0;
+      let onStock = false;
+      const channels = masterVariant?.availability?.channels;
+      for (let key in channels) {
+        totalQuantity += channels[key].availableQuantity;
+        if (channels[key].isOnStock) {
+          onStock = true;
+        }
+      }
+      otherSizes.push({
+        key: masterVariant.key,
+        size: masterVariantSize,
+        availability: {
+          isOnStock: onStock,
+          quantity: totalQuantity,
+        },
+      });
+    }
 
     let currentProduct = formatCurrentProduct(
       product?.body?.masterData?.current
