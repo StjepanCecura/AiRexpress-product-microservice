@@ -93,6 +93,7 @@ const findOtherSizes = (variant, allVariants) => {
   const variantSizes = [];
 
   allVariants.forEach((v) => {
+    console.log(v);
     if (
       v.key.toString().includes(variantName) &&
       v.key.toString() != variant.productKey
@@ -108,6 +109,7 @@ const findOtherSizes = (variant, allVariants) => {
       }
       const currentSize = v?.key?.toString().split("-size-")[1];
       variantSizes.push({
+        id: v?.id,
         key: v?.key,
         size: currentSize,
         availability: {
@@ -121,7 +123,6 @@ const findOtherSizes = (variant, allVariants) => {
 };
 
 const formatVariant = (variant) => {
-  console.log(variant);
   const splitedVariantKey = variant?.key.split("-size-");
   const variantName = splitedVariantKey[0];
   const currentVariantSize = splitedVariantKey[1];
@@ -135,6 +136,7 @@ const formatVariant = (variant) => {
     }
   }
   const formatedVariant = {
+    id: variant?.id,
     productKey: variant?.key,
     name: variantName.replaceAll("-", " "),
     currentSize: currentVariantSize,
@@ -149,8 +151,9 @@ const formatVariant = (variant) => {
   return formatedVariant;
 };
 
-const formatCurrentProduct = (product) => {
+const formatCurrentProduct = (product, productId) => {
   const formatedProduct = {
+    id: productId,
     name: product?.name["en-US"],
     description: product?.description["en-US"],
   };

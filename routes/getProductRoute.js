@@ -33,6 +33,7 @@ module.exports = async (req, res) => {
         }
       }
       otherSizes.push({
+        id: masterVariant.id,
         key: masterVariant.key,
         size: masterVariantSize,
         availability: {
@@ -43,7 +44,8 @@ module.exports = async (req, res) => {
     }
 
     let currentProduct = formatCurrentProduct(
-      product?.body?.masterData?.current
+      product?.body?.masterData?.current,
+      product?.body?.id
     );
     const otherVariants = findOtherVariants(
       currentVariant,
