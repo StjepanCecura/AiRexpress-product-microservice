@@ -121,6 +121,7 @@ const findOtherSizes = (variant, allVariants) => {
 };
 
 const formatVariant = (variant) => {
+  console.log(variant);
   const splitedVariantKey = variant?.key.split("-size-");
   const variantName = splitedVariantKey[0];
   const currentVariantSize = splitedVariantKey[1];
@@ -138,6 +139,8 @@ const formatVariant = (variant) => {
     name: variantName.replaceAll("-", " "),
     currentSize: currentVariantSize,
     images: variant?.images,
+    regularPrice: variant?.prices[0]?.value?.centAmount / 100,
+    discountPrice: variant?.prices[0]?.discounted?.value?.centAmount / 100,
     availability: {
       isOnStock: onStock,
       quantity: totalQuantity,
@@ -150,9 +153,6 @@ const formatCurrentProduct = (product) => {
   const formatedProduct = {
     name: product?.name["en-US"],
     description: product?.description["en-US"],
-    regularPrice: product?.masterVariant?.prices[0]?.value?.centAmount / 100,
-    discountPrice:
-      product?.masterVariant?.prices[0]?.discounted?.value?.centAmount / 100,
   };
 
   return formatedProduct;
