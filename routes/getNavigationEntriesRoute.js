@@ -8,20 +8,15 @@ module.exports = async (req, res) => {
     .getEntries({
       content_type: "navigationEntry",
     })
-    .then((response) => {
+    .then(async (response) => {
       let modifiedResponse = [];
+
       response.items.map((item) => {
         console.log(item.fields.link);
         let title = item.fields.link.fields.title;
         let slug = item.fields.link.fields.slug;
-        let tag = item.fields.link.fields.tag;
         let category = item.fields.link.fields.category;
-        const type =
-          category != undefined
-            ? "category"
-            : tag != undefined
-            ? "tag"
-            : "none";
+        const type = category != undefined ? "category" : "none";
         modifiedResponse.push({ title, slug, type });
       });
       modifiedResponse.reverse();
