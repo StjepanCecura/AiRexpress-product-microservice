@@ -108,6 +108,7 @@ const findOtherSizes = (variant, allVariants) => {
       }
       const currentSize = v?.key?.toString().split("-size-")[1];
       variantSizes.push({
+        key: v?.key,
         size: currentSize,
         availability: {
           isOnStock: onStock,
