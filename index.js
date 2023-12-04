@@ -6,7 +6,7 @@ const cookieParser = require("cookie-parser");
 const getNavigationEntriesRoute = require("./routes/getNavigationEntriesRoute");
 const getPageRoute = require("./routes/getPageRoute");
 const getHomePageRoute = require("./routes/getHomePageRoute");
-const getProductVariantsRoute = require("./routes/getProductVariantsRoute");
+const getProductRoute = require("./routes/getProductRoute");
 const getProductsByCategory = require("./routes/getProductsByCategoryRoute");
 const getProductsByCategoriesRoute = require("./routes/getProductsByCategoriesRoute");
 
@@ -29,7 +29,7 @@ app.get("/getHomePage", getHomePageRoute);
 app.get("/getPage", getPageRoute);
 app.get("/getProductsByCategory", getProductsByCategory);
 app.get("/getProductsByCategories", getProductsByCategoriesRoute);
-app.get("/getProductVariants", getProductVariantsRoute);
+app.get("/getProduct", getProductRoute);
 
 app.listen(port, () => {
   console.log(`Product service on port: ${port}`);
