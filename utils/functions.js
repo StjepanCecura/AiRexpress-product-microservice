@@ -21,7 +21,7 @@ const getCategoryName = async (categoryId) => {
   if (categoryId == undefined) return undefined;
   const category = await commercetoolsClient.execute({
     method: "GET",
-    uri: `/airtim1-webshop-i-cms/categories/` + categoryId,
+    uri: `/airexpress/categories/` + categoryId,
   });
   return category?.body?.name?.["en-US"];
 };
