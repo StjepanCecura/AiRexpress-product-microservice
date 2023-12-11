@@ -29,7 +29,7 @@ const getCategoryName = async (categoryId) => {
 const getProduct = async (productKey) => {
   const product = await commercetoolsClient.execute({
     method: "GET",
-    uri: `/airtim1-webshop-i-cms/products/key=` + productKey,
+    uri: `/airexpress/products/key=` + productKey,
   });
   return product;
 };
@@ -37,7 +37,7 @@ const getProduct = async (productKey) => {
 const getAllProducts = async (categoryId, offset, limit) => {
   const allProducts = await commercetoolsClient.execute({
     method: "GET",
-    uri: `/airtim1-webshop-i-cms/products?limit=${limit}&offset=${offset}&where=masterData%28current%28categories%28id%3D%22${categoryId}%22%29%29%29`,
+    uri: `/airexpress/products?limit=${limit}&offset=${offset}&where=masterData%28current%28categories%28id%3D%22${categoryId}%22%29%29%29`,
   });
 
   return allProducts;
@@ -51,7 +51,7 @@ const getProductsByCategories = async (
 ) => {
   const allProducts = await commercetoolsClient.execute({
     method: "GET",
-    uri: `/airtim1-webshop-i-cms/products?limit=${limit}&offset=${offset}&where=masterData%28current%28categories%28id%3D%22${categoryId1}%22%20%29%20AND%20categories%28id%3D%22${categoryId2}%22%29%29%29`,
+    uri: `/airexpress/products?limit=${limit}&offset=${offset}&where=masterData%28current%28categories%28id%3D%22${categoryId1}%22%20%29%20AND%20categories%28id%3D%22${categoryId2}%22%29%29%29`,
   });
 
   return allProducts;
