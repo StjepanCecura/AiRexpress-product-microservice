@@ -192,7 +192,26 @@ const findOtherVariants = (currentVariant, allVariants, masterVariant) => {
   return otherVariants;
 };
 
+const formatProductsInCart = (products) => {
+  const formatedProducts = [];
+  products.forEach((product) => {
+    formatedProducts.push({
+      id: product.id,
+      productId: product.productId,
+      productKey: product.productKey,
+      productName: product.name["en-US"],
+      variantKey: product.variant.key,
+      price: product.variant.prices[0].value.centAmount / 100,
+      image: product.variant.images[0].url,
+      quantity: product.quantity,
+    });
+  });
+
+  return formatedProducts;
+};
+
 module.exports = {
+  formatProductsInCart,
   getCategoryName,
   filterProducts,
   markdownToHtml,
