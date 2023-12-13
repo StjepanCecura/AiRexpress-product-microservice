@@ -5,7 +5,7 @@ module.exports = async (req, res) => {
     const createdCart = await commercetoolsClient.execute({
       method: "POST",
       uri: `/airexpress/carts`,
-      body: { currency: "EUR" },
+      body: { currency: "EUR", taxMode: "Disabled" },
     });
 
     res.status(200).send({ cartId: createdCart.body.id });
