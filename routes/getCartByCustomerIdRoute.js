@@ -1,8 +1,11 @@
 const { commercetoolsClient } = require("../utils/commercetools.js");
+const { verifyJWT } = require("../utils/functions.js");
 
 module.exports = async (req, res) => {
   try {
-    const customerId = req.query.customerId;
+    const token = req.cookies.token;
+    const JWTVerification = await verifyJWT(token);
+    const customerId = JWTVerification.user.id;
 
     const createdCart = await commercetoolsClient.execute({
       method: "GET",
