@@ -4,36 +4,41 @@ const { markdownToHtml } = require("../utils/functions");
 module.exports = async (req, res) => {
   const contentfulClientInstance = new ContentfulClient();
   const client = contentfulClientInstance.getClient();
-  const slug = req.query.slug;
   client
     .getEntries({
-      content_type: "page",
-      "fields.slug": slug,
+      content_type: "homePage",
+      "fields.slug": "home",
     })
     .then(async (response) => {
-      let markdownDescription = response.items[0]?.fields?.description;
+      let markdownDescription = response?.items[0]?.fields?.description;
       const htmlDesciption = markdownToHtml(markdownDescription);
       const longText = markdownToHtml(
         response?.items[0]?.fields?.footer?.fields?.longText
       );
       const carousel = response?.items[0]?.fields?.carousel?.fields;
-
       const carouselImages = [];
       carousel?.images?.forEach((image) => {
-        carouselImages.push({
+        carouselImages?.push({
           title: image?.fields?.title,
           description: image?.fields?.description,
           url: image?.fields?.file?.url,
         });
       });
 
-      const categoryId = response?.items[0]?.fields?.category;
+      const categoryId1 = response?.items[0]?.fields?.category1;
+      const categoryId2 = response?.items[0]?.fields?.category2;
 
       const modifiedResponse = {
         title: response?.items[0]?.fields?.title,
         slug: response?.items[0]?.fields?.slug,
-        type: categoryId != undefined ? "category" : "none",
-        category: categoryId,
+        type:
+          categoryId1 != undefined
+            ? "category"
+            : categoryId2 != undefined
+            ? "category"
+            : "none",
+        category1: categoryId1,
+        category2: categoryId2,
         description: htmlDesciption,
         header: {
           title: response?.items[0]?.fields?.header?.fields?.title,
