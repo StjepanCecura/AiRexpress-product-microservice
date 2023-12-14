@@ -12,7 +12,8 @@ const getProductsByCategoriesRoute = require("./routes/getProductsByCategoriesRo
 const createCartRoute = require("./routes/createCartRoute");
 const getCartByIdRoute = require("./routes/getCartByIdRoute");
 const addProductToCartRoute = require("./routes/addProductToCartRoute");
-const createCartForUserRoute = require("./routes/createCartForUserRoute");
+const createCartForCustomerRoute = require("./routes/createCartForCustomerRoute");
+const getCartByCustomerIdRoute = require("./routes/getCartByCustomerIdRoute");
 
 dotenv.config();
 
@@ -35,10 +36,10 @@ app.get("/getProductsByCategory", getProductsByCategory);
 app.get("/getProductsByCategories", getProductsByCategoriesRoute);
 app.get("/getProduct", getProductRoute);
 app.get("/getCartById", getCartByIdRoute);
-//app.get("/getCartByUserId", getCartByUserIdRoute);
+app.get("/getCartByCustomerId", getCartByCustomerIdRoute);
 
 app.post("/createCart", createCartRoute);
-app.post("/createCartForUser", createCartForUserRoute);
+app.post("/createCartForUser", createCartForCustomerRoute);
 app.post("/addProductToCart", addProductToCartRoute);
 
 app.listen(port, () => {
