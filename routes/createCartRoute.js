@@ -7,7 +7,6 @@ module.exports = async (req, res) => {
       uri: `/airexpress/carts`,
       body: { currency: "EUR", taxMode: "Disabled" },
     });
-
     res.status(200).send({ cartId: createdCart.body.id });
   } catch (error) {
     console.log(`Error while creating cart! ${error}`);

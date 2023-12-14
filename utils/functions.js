@@ -210,7 +210,39 @@ const formatProductsInCart = (products) => {
   return formatedProducts;
 };
 
+const verifyJWT = async (token) => {
+  const response = await fetch("http://customer_service:4002/verifyJWT", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ token: token }),
+  })
+    .then(async (response) => {
+      const body = await response.json();
+      if (response.status == 200)
+        return {
+          success: true,
+          user: {
+            id: body.user.id,
+            email: body.user.email,
+            firstName: body.user.firstName,
+            lastName: body.user.lastName,
+          },
+        };
+      else {
+        return { success: false };
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      return { success: false };
+    });
+
+  return response;
+};
 module.exports = {
+  verifyJWT,
   formatProductsInCart,
   getCategoryName,
   filterProducts,
