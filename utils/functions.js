@@ -202,9 +202,9 @@ const formatProductsInCart = (products) => {
       productName: product.name["en-US"],
       variantKey: product.variant.key,
       variantId: product.variant.id,
-      price: product.variant.prices[0]?.discounted
-        ? product.variant.prices[0]?.discounted?.value?.centAmount / 100
-        : product.variant.prices[0].value.centAmount / 100,
+      price: product.variant.prices[0].value.centAmount / 100,
+      discountPrice:
+        product.variant.prices[0]?.discounted?.value?.centAmount / 100,
       image: product.variant.images[0].url,
       quantity: product.quantity,
     });
