@@ -42,8 +42,7 @@ app.get("/getCartByCustomerId", getCartByCustomerIdRoute);
 app.post("/createCart", createCartRoute);
 app.post("/createCartForUser", createCartForCustomerRoute);
 app.post("/addProductToCart", addProductToCartRoute);
-
-app.delete("/removeProductFromCart", removeProductFromCartRoute);
+app.post("/removeProductFromCart", removeProductFromCartRoute);
 
 app.listen(port, () => {
   console.log(`Product service on port: ${port}`);
