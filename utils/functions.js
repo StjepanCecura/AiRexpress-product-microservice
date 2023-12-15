@@ -201,7 +201,9 @@ const formatProductsInCart = (products) => {
       productKey: product.productKey,
       productName: product.name["en-US"],
       variantKey: product.variant.key,
-      price: product.variant.prices[0].value.centAmount / 100,
+      price: product.variant.prices[0]?.discounted
+        ? product.variant.prices[0]?.discounted?.value?.centAmount / 100
+        : product.variant.prices[0].value.centAmount / 100,
       image: product.variant.images[0].url,
       quantity: product.quantity,
     });
