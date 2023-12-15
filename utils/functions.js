@@ -196,7 +196,7 @@ const formatProductsInCart = (products) => {
   const formatedProducts = [];
   products.forEach((product) => {
     formatedProducts.push({
-      id: product.id,
+      lineItemId: product.id,
       productId: product.productId,
       productKey: product.productKey,
       productName: product.name["en-US"],
