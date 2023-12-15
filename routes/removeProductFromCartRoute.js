@@ -4,25 +4,37 @@ const { formatProductsInCart } = require("../utils/functions.js");
 module.exports = async (req, res) => {
   try {
     const cartId = req.body.cartId;
-    const version = req.body.version;
-    const productId = req.body.productId;
-    const variantId = req.body.variantId;
+    const lineItemId = req.body.lineItemId;
     const quantity = req.body.quantity;
+    const version = req.body.version;
 
-    const cart = await commercetoolsClient.execute({
-      method: "POST",
-      uri: `/airexpress/carts/${cartId}`,
-      body: {
+    let body;
+    if (quantity) {
+      body = {
         version: version,
         actions: [
           {
-            action: "addLineItem",
-            productId: productId,
-            variantId: parseInt(variantId),
-            quantity: parseInt(quantity),
+            action: "removeLineItem",
+            lineItemId: lineItemId,
+            quantity: quantity,
           },
         ],
-      },
+      };
+    } else {
+      body = {
+        version: version,
+        actions: [
+          {
+            action: "removeLineItem",
+            lineItemId: lineItemId,
+          },
+        ],
+      };
+    }
+    const cart = await commercetoolsClient.execute({
+      method: "POST",
+      uri: `/airexpress/carts/${cartId}`,
+      body: body,
     });
 
     const formatedProduct = formatProductsInCart(cart.body.lineItems);
@@ -35,7 +47,7 @@ module.exports = async (req, res) => {
       currency: cart.body.totalPrice.currencyCode,
     });
   } catch (error) {
-    console.log(`Error while adding product to cart! error:${error}`);
+    console.log(`Error while removing product from cart! error:${error}`);
     res.status(400).send(error);
   }
 };
