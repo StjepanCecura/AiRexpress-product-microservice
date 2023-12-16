@@ -192,7 +192,61 @@ const findOtherVariants = (currentVariant, allVariants, masterVariant) => {
   return otherVariants;
 };
 
+const formatProductsInCart = (products) => {
+  const formatedProducts = [];
+  products.forEach((product) => {
+    formatedProducts.push({
+      lineItemId: product.id,
+      productId: product.productId,
+      productKey: product.productKey,
+      productName: product.name["en-US"],
+      variantKey: product.variant.key,
+      variantId: product.variant.id,
+      price: product.variant.prices[0].value.centAmount / 100,
+      discountPrice:
+        product.variant.prices[0]?.discounted?.value?.centAmount / 100,
+      image: product.variant.images[0].url,
+      quantity: product.quantity,
+    });
+  });
+
+  return formatedProducts;
+};
+
+const verifyJWT = async (token) => {
+  const response = await fetch("http://customer_service:4002/verifyJWT", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ token: token }),
+  })
+    .then(async (response) => {
+      const body = await response.json();
+      if (response.status == 200)
+        return {
+          success: true,
+          user: {
+            id: body.user.id,
+            email: body.user.email,
+            firstName: body.user.firstName,
+            lastName: body.user.lastName,
+          },
+        };
+      else {
+        return { success: false };
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      return { success: false };
+    });
+
+  return response;
+};
 module.exports = {
+  verifyJWT,
+  formatProductsInCart,
   getCategoryName,
   filterProducts,
   markdownToHtml,
