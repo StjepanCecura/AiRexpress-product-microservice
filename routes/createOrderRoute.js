@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
 
     res.status(200).send(order);
   } catch (error) {
-    console.log("Error creating order!");
+    console.log(`Error creating order! ${error}`);
     res.status(503).send({ error });
   }
 };
