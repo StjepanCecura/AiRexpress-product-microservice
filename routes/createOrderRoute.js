@@ -14,10 +14,12 @@ module.exports = async (req, res) => {
           typeId: "cart",
         },
         version,
+        shipmentState: "Pending",
+        paymentState: "Pending",
       },
     });
 
-    res.status(200).send(order);
+    res.status(200).send({ success: true });
   } catch (error) {
     console.log(`Error creating order! ${error}`);
     res.status(503).send({ error });
