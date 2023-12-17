@@ -14,6 +14,8 @@ module.exports = async (req, res) => {
           typeId: "cart",
         },
         version,
+        shipmentState: "Pending",
+        paymentState: "Pending",
       },
     });
 
