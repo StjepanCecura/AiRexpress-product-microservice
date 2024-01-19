@@ -244,6 +244,7 @@ const verifyJWT = async (token) => {
 
   return response;
 };
+
 module.exports = {
   verifyJWT,
   formatProductsInCart,
